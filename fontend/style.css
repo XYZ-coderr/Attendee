@@ -1777,3 +1777,156 @@ tr:nth-child(even) {
     }
 
 }
+
+/* =====================================================
+   STAFF LOGIN + ADMIN/FACULTY DASHBOARD REDESIGN
+===================================================== */
+[hidden] { display: none !important; }
+
+#staffLoginSection.staff-login-card {
+    width: min(100%, 460px);
+    margin: 24px auto 0;
+    padding: 22px;
+    border: 1px solid #e8e4db;
+    border-radius: 18px;
+    background: rgba(255,255,255,.76);
+    box-shadow: 0 12px 32px rgba(37, 39, 54, .08);
+    box-sizing: border-box;
+    text-align: left;
+}
+.staff-login-heading { display:flex; align-items:center; gap:12px; margin-bottom:18px; }
+.staff-login-icon { display:grid; place-items:center; width:42px; height:42px; flex:0 0 42px; border-radius:13px; color:#fff; background:#3867e8; font-size:22px; font-weight:800; }
+.staff-login-heading h3 { margin:0 0 4px; font-size:18px; color:#24283b; }
+.staff-login-heading p { margin:0; color:#777d8c; font-size:12px; line-height:1.45; }
+#staffLoginForm { display:grid; grid-template-columns:1fr; gap:8px; }
+#staffLoginForm label { margin:4px 0 0; color:#454b5e; font-size:13px; font-weight:650; }
+#staffLoginForm input { box-sizing:border-box; width:100%; min-height:44px; border:1px solid #d9dce5; border-radius:10px; background:#fff; padding:11px 13px; font:inherit; font-size:14px; color:#24283b; outline:none; transition:border-color .18s, box-shadow .18s; }
+#staffLoginForm input:focus { border-color:#3867e8; box-shadow:0 0 0 3px rgba(56,103,232,.13); }
+#staffLoginForm button[type="submit"] { min-height:46px; margin-top:8px; border:0; border-radius:10px; color:#fff; background:#3867e8; font-weight:750; font-size:14px; cursor:pointer; transition:transform .15s, background .15s; }
+#staffLoginForm button[type="submit"]:hover { background:#2e56c7; transform:translateY(-1px); }
+#staffLoginForm button[type="submit"]:disabled { opacity:.65; cursor:wait; }
+#staffLoginMessage { margin:4px 0 0; color:#28734b; font-size:13px; line-height:1.45; overflow-wrap:anywhere; }
+#staffLoginMessage.error { color:#b42318; }
+#staffLoginMessage.success { color:#28734b; }
+
+.staff-dashboard { position:fixed; inset:0; z-index:10000; display:grid; grid-template-columns:250px minmax(0,1fr); background:#f5f7fc; color:#20263a; overflow:auto; font-family:Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
+.staff-sidebar { position:sticky; top:0; height:100vh; box-sizing:border-box; display:flex; flex-direction:column; padding:26px 17px 18px; background:#20263a; color:#fff; }
+.staff-brand { display:flex; align-items:center; gap:11px; padding:0 8px 32px; }
+.staff-brand-mark { display:grid; place-items:center; width:40px; height:40px; border-radius:13px; color:#fff; background:#5278ef; font-size:23px; font-weight:900; }
+.staff-brand strong { display:block; font-size:15px; letter-spacing:1.4px; }
+.staff-brand small { display:block; margin-top:4px; color:#aeb7d0; font-size:11px; }
+.staff-nav-label { padding:0 11px; color:#8f9ab8; font-size:10px; font-weight:800; letter-spacing:1.6px; }
+.staff-nav-item { display:flex; align-items:center; gap:12px; width:100%; margin:4px 0; padding:13px 12px; border:0; border-radius:10px; background:transparent; color:#c4cbe0; text-align:left; font:inherit; font-size:14px; cursor:pointer; }
+.staff-nav-item.active, .staff-nav-item:hover { color:#fff; background:#34415f; }
+.staff-nav-item.active { box-shadow:inset 3px 0 #7c9aff; }
+.staff-sidebar-bottom { display:flex; align-items:center; gap:10px; margin-top:auto; padding:16px 5px 0; border-top:1px solid #3b435a; }
+.staff-avatar, .staff-top-avatar { display:grid; place-items:center; flex:0 0 36px; width:36px; height:36px; border-radius:50%; color:#fff; background:#526fe0; font-weight:800; }
+.staff-account { min-width:0; flex:1; }
+.staff-account strong, .staff-account small { display:block; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.staff-account strong { font-size:12px; }
+.staff-account small { margin-top:4px; color:#aeb7d0; font-size:10px; }
+.staff-logout { border:0; background:transparent; color:#cbd2e5; font-size:11px; cursor:pointer; }
+.staff-main { min-width:0; }
+.staff-topbar { display:flex; align-items:center; justify-content:space-between; gap:18px; padding:23px clamp(20px,4vw,48px); border-bottom:1px solid #e8ebf3; background:#fff; }
+.staff-eyebrow { color:#687ba9; font-size:10px; font-weight:800; letter-spacing:1.5px; }
+.staff-topbar h1 { margin:5px 0 0; font-size:25px; letter-spacing:-.6px; }
+.staff-top-actions { display:flex; align-items:center; gap:9px; color:#6e7485; font-size:12px; }
+.staff-status-dot { width:8px; height:8px; border-radius:50%; background:#28b879; box-shadow:0 0 0 4px #e5f8ef; }
+.staff-top-avatar { margin-left:8px; }
+.staff-content { max-width:1500px; margin:0 auto; padding:28px clamp(20px,4vw,48px) 40px; }
+.staff-welcome { display:flex; align-items:center; justify-content:space-between; gap:18px; margin-bottom:24px; }
+.staff-welcome h2 { margin:0 0 7px; font-size:22px; letter-spacing:-.5px; }
+.staff-welcome p, .staff-section-heading p { margin:0; color:#7b8192; font-size:13px; }
+.staff-refresh { padding:10px 14px; border:1px solid #dce1ed; border-radius:9px; background:#fff; color:#394665; font-weight:700; cursor:pointer; }
+.staff-stat-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:16px; margin-bottom:30px; }
+.staff-stat-card { display:grid; grid-template-columns:42px 1fr; align-items:center; column-gap:12px; padding:20px; border:1px solid #e8ebf3; border-radius:15px; background:#fff; box-shadow:0 4px 16px rgba(36,48,82,.025); }
+.staff-stat-icon { display:grid; place-items:center; grid-row:span 3; width:42px; height:42px; border-radius:12px; font-size:20px; font-weight:800; }
+.staff-stat-icon.blue { background:#eaf0ff; color:#3867e8; }
+.staff-stat-icon.coral { background:#fff0e9; color:#dc7558; }
+.staff-stat-icon.violet { background:#f1ebff; color:#8258cb; }
+.staff-stat-label { color:#737b8f; font-size:12px; }
+.staff-stat-card strong { margin:5px 0; font-size:25px; letter-spacing:-.5px; }
+.staff-stat-card small { color:#9a9faf; font-size:10px; }
+.staff-section-heading { display:flex; align-items:end; justify-content:space-between; gap:16px; margin-bottom:15px; }
+.staff-section-heading h2 { margin:0 0 6px; font-size:18px; }
+.staff-search { width:min(100%,290px); box-sizing:border-box; padding:11px 13px; border:1px solid #dce1ed; border-radius:10px; background:#fff; color:#24283b; font:inherit; font-size:12px; outline:none; }
+.staff-search:focus { border-color:#3867e8; box-shadow:0 0 0 3px rgba(56,103,232,.1); }
+.staff-message { margin:0 0 12px; color:#28734b; font-size:13px; }
+.staff-message.error { color:#b42318; }
+.staff-table-wrap { overflow:auto; border:1px solid #e8ebf3; border-radius:14px; background:#fff; }
+.staff-table { width:100%; border-collapse:collapse; text-align:left; white-space:nowrap; }
+.staff-table th { padding:14px 17px; background:#fafbfe; color:#858b9c; font-size:10px; letter-spacing:1px; font-weight:800; }
+.staff-table td { padding:14px 17px; border-top:1px solid #edf0f6; color:#5e6578; font-size:12px; }
+.staff-student-name { display:flex; align-items:center; gap:10px; }
+.staff-student-avatar { display:grid; place-items:center; width:34px; height:34px; border-radius:10px; background:#edf1ff; color:#4568d9; font-weight:800; }
+.staff-student-name strong, .staff-student-name small { display:block; }
+.staff-student-name strong { color:#252b3d; font-size:12px; }
+.staff-student-name small { margin-top:3px; color:#9a9faf; font-size:10px; }
+.staff-mark-button { padding:8px 11px; border:0; border-radius:8px; background:#eaf0ff; color:#3158c7; font-size:11px; font-weight:750; cursor:pointer; }
+.staff-mark-button:hover { background:#dce6ff; }
+.staff-footnote { margin-top:15px; color:#9a9faf; font-size:11px; line-height:1.6; }
+@media (max-width:900px) {
+ .staff-dashboard { grid-template-columns:190px minmax(0,1fr); }
+ .staff-sidebar { padding-left:12px; padding-right:12px; }
+ .staff-stat-grid { grid-template-columns:1fr; }
+ .staff-stat-card { max-width:none; }
+}
+@media (max-width:620px) {
+ .staff-dashboard { display:block; }
+ .staff-sidebar { position:relative; height:auto; padding:14px; }
+ .staff-brand { padding-bottom:12px; }
+ .staff-nav-label, .staff-sidebar-bottom { display:none; }
+ .staff-nav-item { display:inline-flex; width:auto; margin:2px; padding:9px; }
+ .staff-topbar { padding:18px; }
+ .staff-topbar h1 { font-size:21px; }
+ .staff-content { padding:20px 14px 30px; }
+ .staff-welcome, .staff-section-heading { align-items:stretch; flex-direction:column; }
+ .staff-search { width:100%; }
+ .staff-table th, .staff-table td { padding:12px; }
+ #staffLoginSection.staff-login-card { padding:17px; }
+}
+
+
+/* =====================================================
+   ROLE SELECTION
+===================================================== */
+.role-chooser {
+    width: 100%;
+    padding: 8px 0 4px;
+}
+.role-chooser-heading { text-align: center; margin: 8px 0 24px; }
+.role-eyebrow {
+    display: inline-block; color: #3767e8; font-size: 11px; font-weight: 800;
+    letter-spacing: 2px; margin-bottom: 9px;
+}
+.role-chooser-heading h1 { color: #1f2937; font-size: 30px; font-weight: 800; margin-bottom: 8px; }
+.role-chooser-heading p { color: #687386; font-size: 14px; }
+.role-choice-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.role-choice-card {
+    display: flex; flex-direction: column; align-items: flex-start; text-align: left;
+    gap: 10px; min-height: 210px; padding: 20px 17px; border: 1px solid #e4e7ee;
+    border-radius: 16px; background: rgba(255,255,255,.88); color: #202a3c;
+    box-shadow: 0 7px 20px rgba(31,41,55,.06); transition: transform .2s, border-color .2s, box-shadow .2s;
+}
+.role-choice-card:hover, .role-choice-card:focus-visible {
+    transform: translateY(-3px); border-color: #3767e8; box-shadow: 0 12px 25px rgba(55,103,232,.14);
+    outline: none;
+}
+.role-choice-icon {
+    display: grid; place-items: center; width: 48px; height: 48px; border-radius: 13px;
+    background: #edf2ff; color: #3767e8; font-size: 24px; font-weight: 800;
+}
+.role-choice-title { font-size: 17px; font-weight: 800; }
+.role-choice-description { min-height: 38px; color: #687386; font-size: 12px; line-height: 1.55; }
+.role-choice-action { margin-top: auto; color: #3767e8; font-size: 12px; font-weight: 800; }
+.role-back-link, .staff-back-button {
+    display: block; width: 100%; margin-top: 12px; padding: 9px; background: transparent;
+    border: 0; color: #647084; font-size: 12px; font-weight: 700;
+}
+.role-back-link:hover, .staff-back-button:hover { color: #3767e8; }
+#staffLoginSection[hidden], #roleChooser[hidden] { display: none !important; }
+@media (max-width: 520px) {
+    .role-choice-grid { grid-template-columns: 1fr; }
+    .role-choice-card { min-height: 165px; }
+    .role-chooser-heading h1 { font-size: 26px; }
+}

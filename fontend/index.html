@@ -120,11 +120,34 @@
 
 
 
+            <!-- ROLE SELECTION: choose the correct portal first -->
+            <section id="roleChooser" class="role-chooser">
+                <div class="role-chooser-heading">
+                    <span class="role-eyebrow">ATTENDEE PORTAL</span>
+                    <h1>Who are you?</h1>
+                    <p>Choose your portal to continue.</p>
+                </div>
+                <div class="role-choice-grid">
+                    <button type="button" class="role-choice-card" onclick="chooseStudentRole()">
+                        <span class="role-choice-icon">🎓</span>
+                        <span class="role-choice-title">Student</span>
+                        <span class="role-choice-description">View attendance, subjects and safe classes.</span>
+                        <span class="role-choice-action">Continue as Student <span aria-hidden="true">→</span></span>
+                    </button>
+                    <button type="button" class="role-choice-card" onclick="chooseStaffRole()">
+                        <span class="role-choice-icon">↗</span>
+                        <span class="role-choice-title">Faculty / Admin</span>
+                        <span class="role-choice-description">Manage students and record attendance.</span>
+                        <span class="role-choice-action">Continue as Staff <span aria-hidden="true">→</span></span>
+                    </button>
+                </div>
+            </section>
+
             <!-- =================================================
-                 WELCOME
+                 STUDENT WELCOME
             ================================================= -->
 
-            <div id="welcomeSection">
+            <div id="welcomeSection" style="display:none">
 
 
                 <div class="welcome">
@@ -167,6 +190,7 @@
 
 
                 </div>
+                <button type="button" class="role-back-link" onclick="backToRoleChooser()">← Change portal</button>
 
 
             </div>
@@ -279,8 +303,8 @@
 
             </form>
             
-<div id="staffLoginSection">
-    <h3>Faculty / Admin Login</h3>
+<div id="staffLoginSection" class="staff-login-card" hidden>
+    <div class="staff-login-heading"><span class="staff-login-icon">↗</span><div><h3>Faculty / Admin</h3><p>Sign in to manage student attendance</p></div></div>
 
     <form id="staffLoginForm">
         <label for="staffUsername">Username</label>
@@ -302,7 +326,8 @@
         >
 
         <button type="submit">Login as Faculty / Admin</button>
-        <p id="staffLoginMessage"></p>
+        <button type="button" class="staff-back-button" onclick="backToRoleChooser()">← Back to role selection</button>
+        <p id="staffLoginMessage" role="status" aria-live="polite"></p>
     </form>
 </div>
 
@@ -1007,6 +1032,34 @@
 
 </div>
 
+
+
+
+<!-- STAFF DASHBOARD -->
+<section id="staffDashboard" class="staff-dashboard" hidden>
+  <aside class="staff-sidebar">
+    <div class="staff-brand"><span class="staff-brand-mark">A</span><div><strong>ATTENDEE</strong><small>Attendance Portal</small></div></div>
+    <p class="staff-nav-label">WORKSPACE</p>
+    <button class="staff-nav-item active" type="button" data-staff-view="overview">▦ <span>Overview</span></button>
+    <button class="staff-nav-item" type="button" data-staff-view="students">♙ <span>Students</span></button>
+    <div class="staff-sidebar-bottom"><span class="staff-avatar" id="staffAvatar">A</span><div class="staff-account"><strong id="staffDisplayName">Admin</strong><small id="staffDisplayRole">Administrator</small></div><button id="staffLogoutButton" type="button" class="staff-logout">Log out ↗</button></div>
+  </aside>
+  <main class="staff-main">
+    <header class="staff-topbar"><div><span class="staff-eyebrow">ATTENDANCE MANAGEMENT</span><h1 id="staffPageTitle">Overview</h1></div><div class="staff-top-actions"><span class="staff-status-dot"></span><span>System online</span><span class="staff-top-avatar" id="staffTopAvatar">A</span></div></header>
+    <div class="staff-content">
+      <div class="staff-welcome"><div><h2>Welcome back<span id="staffWelcomeName">!</span></h2><p>Here’s what’s happening with your students today.</p></div><button type="button" id="refreshStaffDashboard" class="staff-refresh">↻ &nbsp; Refresh data</button></div>
+      <div class="staff-stat-grid">
+        <article class="staff-stat-card"><span class="staff-stat-icon blue">♙</span><span class="staff-stat-label">Registered students</span><strong id="staffStudentCount">—</strong><small>From your student database</small></article>
+        <article class="staff-stat-card"><span class="staff-stat-icon coral">✓</span><span class="staff-stat-label">Staff role</span><strong id="staffRoleStat">Admin</strong><small>Authenticated account</small></article>
+        <article class="staff-stat-card"><span class="staff-stat-icon violet">▤</span><span class="staff-stat-label">Attendance history</span><strong id="staffHistoryCount">Ready</strong><small>Record class attendance below</small></article>
+      </div>
+      <div class="staff-section-heading"><div><h2 id="staffTableTitle">Students</h2><p>Find a student and record attendance for a class.</p></div><input id="staffStudentSearch" class="staff-search" type="search" placeholder="Search name or registration no." aria-label="Search students"></div>
+      <div id="staffDashboardMessage" class="staff-message" role="status"></div>
+      <div class="staff-table-wrap"><table class="staff-table"><thead><tr><th>STUDENT</th><th>REGISTRATION NO.</th><th>YEAR / SECTION</th><th>SEMESTER</th><th>MARK CLASS</th></tr></thead><tbody id="staffStudentsBody"><tr><td colspan="5">Log in to load students.</td></tr></tbody></table></div>
+      <p class="staff-footnote">Attendance changes are saved to the connected backend. Only authenticated faculty/admin accounts can record attendance.</p>
+    </div>
+  </main>
+</section>
 
 
 <!-- =====================================================

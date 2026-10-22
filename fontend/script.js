@@ -106,6 +106,49 @@ const defaultAttendance = {
 
 
 /* =====================================================
+   ROLE SELECTION
+===================================================== */
+
+function chooseStudentRole() {
+    const chooser = document.getElementById("roleChooser");
+    const welcome = document.getElementById("welcomeSection");
+    const staff = document.getElementById("staffLoginSection");
+    if (chooser) chooser.hidden = true;
+    if (staff) staff.hidden = true;
+    if (welcome) welcome.style.display = "block";
+    document.getElementById("robotMessage").textContent = "Welcome, student. Ready to check your attendance?";
+    setRobotState("idle");
+}
+
+function chooseStaffRole() {
+    const chooser = document.getElementById("roleChooser");
+    const welcome = document.getElementById("welcomeSection");
+    const staff = document.getElementById("staffLoginSection");
+    if (chooser) chooser.hidden = true;
+    if (welcome) welcome.style.display = "none";
+    document.getElementById("loginForm").classList.remove("active");
+    document.getElementById("signupForm").classList.remove("active");
+    if (staff) staff.hidden = false;
+    document.getElementById("robotMessage").textContent = "Staff access only. Please sign in.";
+    setRobotState("idle");
+}
+
+function backToRoleChooser() {
+    const chooser = document.getElementById("roleChooser");
+    const welcome = document.getElementById("welcomeSection");
+    const staff = document.getElementById("staffLoginSection");
+    if (chooser) chooser.hidden = false;
+    if (welcome) welcome.style.display = "none";
+    if (staff) staff.hidden = true;
+    document.getElementById("loginForm").classList.remove("active");
+    document.getElementById("signupForm").classList.remove("active");
+    document.getElementById("loginTab").classList.remove("active");
+    document.getElementById("signupTab").classList.remove("active");
+    document.getElementById("robotMessage").textContent = "Beep boop. Who goes there?";
+    setRobotState("idle");
+}
+
+/* =====================================================
    SHOW LOGIN
 ===================================================== */
 
@@ -1726,52 +1769,221 @@ window.onclick =
 
     };
     
-document.addEventListener("DOMContentLoaded", function () {
-    const staffForm = document.getElementById("staffLoginForm");
 
-    if (!staffForm) return;
+/* =====================================================
+   FACULTY / ADMIN LOGIN AND DASHBOARD
+===================================================== */
+(function () {
+    const API_BASE = "http://localhost:5000";
+    const byId = (id) => document.getElementById(id);
 
-    staffForm.addEventListener("submit", async function (event) {
-        event.preventDefault();
+    function showStaffMessage(text, isError = false) {
+        const node = byId("staffDashboardMessage");
+        if (!node) return;
+        node.textContent = text;
+        node.classList.toggle("error", isError);
+    }
 
-        const username = document.getElementById("staffUsername").value.trim();
-        const password = document.getElementById("staffPassword").value;
-        const message = document.getElementById("staffLoginMessage");
+    function getStaffToken() {
+        return localStorage.getItem("staffToken");
+    }
 
-        message.textContent = "Logging in...";
+    async function staffRequest(path, options = {}) {
+        const response = await fetch(`${API_BASE}${path}`, {
+            ...options,
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${getStaffToken()}`,
+                ...(options.headers || {})
+            }
+        });
+        const text = await response.text();
+        let data = {};
+        if (text) {
+            try { data = JSON.parse(text); }
+            catch { throw new Error("The server returned an unexpected response. Check that the backend is running on port 5000."); }
+        }
+        if (!response.ok) {
+            if (response.status === 401) {
+                localStorage.removeItem("staffToken");
+                localStorage.removeItem("staffUser");
+            }
+            throw new Error(data.message || `Request failed (${response.status}).`);
+        }
+        return data;
+    }
 
+    function initials(name) {
+        return String(name || "A").trim().slice(0, 1).toUpperCase();
+    }
+
+    function showStaffDashboard(staff) {
+        const authPage = byId("authPage");
+        const dashboard = byId("staffDashboard");
+        if (authPage) authPage.hidden = true;
+        if (dashboard) dashboard.hidden = false;
+
+        const username = staff.username || "Staff";
+        const role = String(staff.role || "staff");
+        const roleLabel = role.charAt(0).toUpperCase() + role.slice(1);
+        if (byId("staffDisplayName")) byId("staffDisplayName").textContent = username;
+        if (byId("staffDisplayRole")) byId("staffDisplayRole").textContent = roleLabel;
+        if (byId("staffRoleStat")) byId("staffRoleStat").textContent = roleLabel;
+        if (byId("staffWelcomeName")) byId("staffWelcomeName").textContent = `, ${username}`;
+        if (byId("staffAvatar")) byId("staffAvatar").textContent = initials(username);
+        if (byId("staffTopAvatar")) byId("staffTopAvatar").textContent = initials(username);
+        loadStaffStudents();
+    }
+
+    async function loadStaffStudents() {
+        const body = byId("staffStudentsBody");
+        if (!body) return;
+        body.innerHTML = '<tr><td colspan="5">Loading students…</td></tr>';
+        showStaffMessage("");
         try {
-            const response = await fetch("http://localhost:5000/staff/login", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({ username, password })
+            const students = await staffRequest("/students");
+            if (!Array.isArray(students)) throw new Error("Student list response was not valid.");
+            byId("staffStudentCount").textContent = students.length;
+            if (students.length === 0) {
+                body.innerHTML = '<tr><td colspan="5">No students are registered yet.</td></tr>';
+                return;
+            }
+            body.innerHTML = "";
+            students.forEach((student) => {
+                const row = document.createElement("tr");
+                row.dataset.search = `${student.name || ""} ${student.reg_no || ""}`.toLowerCase();
+                const nameCell = document.createElement("td");
+                nameCell.innerHTML = `<div class="staff-student-name"><span class="staff-student-avatar">${escapeHtml(initials(student.name))}</span><span><strong>${escapeHtml(student.name || "Unnamed student")}</strong><small>Student</small></span></div>`;
+                const regCell = document.createElement("td");
+                regCell.textContent = student.reg_no || "—";
+                const yearCell = document.createElement("td");
+                yearCell.textContent = `${student.year || "—"} / ${student.section || "—"}`;
+                const semCell = document.createElement("td");
+                semCell.textContent = student.semester || "—";
+                const actionCell = document.createElement("td");
+                const markButton = document.createElement("button");
+                markButton.type = "button";
+                markButton.className = "staff-mark-button";
+                markButton.textContent = "Mark attendance";
+                markButton.addEventListener("click", () => openMarkAttendance(student));
+                actionCell.appendChild(markButton);
+                row.append(nameCell, regCell, yearCell, semCell, actionCell);
+                body.appendChild(row);
             });
-
-            const data = await response.json();
-
-            if (!response.ok) {
-                throw new Error(data.message || "Staff login failed.");
-            }
-
-            const token = data.token || data.accessToken;
-
-            if (!token) {
-                throw new Error("Login succeeded, but no token was returned.");
-            }
-
-            localStorage.setItem("staffToken", token);
-            localStorage.setItem("staffUser", JSON.stringify(data.staff || data.user || {
-                username: username,
-                role: data.role || "staff"
-            }));
-
-            message.textContent = "Login successful! Staff authentication is saved.";
-
         } catch (error) {
-            console.error("Staff login error:", error);
-            message.textContent = error.message || "Unable to log in.";
+            body.innerHTML = '<tr><td colspan="5">Could not load student data.</td></tr>';
+            showStaffMessage(error.message, true);
+        }
+    }
+
+    function escapeHtml(value) {
+        return String(value).replace(/[&<>"']/g, (char) => ({
+            "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
+        })[char]);
+    }
+
+    function openMarkAttendance(student) {
+        const subject = window.prompt(`Subject name for ${student.name} (${student.reg_no}):`);
+        if (subject === null) return;
+        if (!subject.trim()) {
+            showStaffMessage("Enter a subject name before marking attendance.", true);
+            return;
+        }
+        const date = window.prompt("Class date (YYYY-MM-DD):", new Date().toISOString().slice(0, 10));
+        if (date === null) return;
+        if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) {
+            showStaffMessage("Enter the date in YYYY-MM-DD format.", true);
+            return;
+        }
+        const status = window.prompt("Enter status: present, absent, or cancelled", "present");
+        if (status === null) return;
+        const normalizedStatus = status.trim().toLowerCase();
+        if (!["present", "absent", "cancelled"].includes(normalizedStatus)) {
+            showStaffMessage("Status must be present, absent, or cancelled.", true);
+            return;
+        }
+        staffRequest("/attendance", {
+            method: "POST",
+            body: JSON.stringify({
+                student_id: Number(student.id),
+                subject_name: subject.trim(),
+                class_date: date,
+                status: normalizedStatus
+            })
+        }).then((result) => {
+            showStaffMessage(result.message || `Attendance saved as ${normalizedStatus}.`);
+            if (byId("staffHistoryCount")) byId("staffHistoryCount").textContent = "Updated";
+        }).catch((error) => showStaffMessage(error.message, true));
+    }
+
+    function logoutStaff() {
+        localStorage.removeItem("staffToken");
+        localStorage.removeItem("staffUser");
+        if (byId("staffDashboard")) byId("staffDashboard").hidden = true;
+        if (byId("authPage")) byId("authPage").hidden = false;
+        backToRoleChooser();
+        if (byId("staffLoginForm")) byId("staffLoginForm").reset();
+        if (byId("staffLoginMessage")) byId("staffLoginMessage").textContent = "";
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+        const staffForm = byId("staffLoginForm");
+        if (staffForm) {
+            staffForm.addEventListener("submit", async function (event) {
+                event.preventDefault();
+                const username = byId("staffUsername").value.trim();
+                const password = byId("staffPassword").value;
+                const message = byId("staffLoginMessage");
+                const button = staffForm.querySelector('button[type="submit"]');
+                message.textContent = "Signing in…";
+                message.classList.remove("error", "success");
+                if (button) button.disabled = true;
+                try {
+                    const response = await fetch(`${API_BASE}/staff/login`, {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ username, password })
+                    });
+                    const text = await response.text();
+                    let data;
+                    try { data = JSON.parse(text); }
+                    catch { throw new Error("The backend returned HTML instead of JSON. Confirm the API is running at http://localhost:5000 and the route is /staff/login."); }
+                    if (!response.ok) throw new Error(data.message || "Staff login failed.");
+                    if (!data.token) throw new Error("Login response did not include an authentication token.");
+                    localStorage.setItem("staffToken", data.token);
+                    localStorage.setItem("staffUser", JSON.stringify(data.staff || { username, role: "staff" }));
+                    message.textContent = "Login successful. Opening dashboard…";
+                    message.classList.add("success");
+                    showStaffDashboard(data.staff || { username, role: "staff" });
+                } catch (error) {
+                    message.textContent = error.message || "Unable to log in.";
+                    message.classList.add("error");
+                } finally {
+                    if (button) button.disabled = false;
+                }
+            });
+        }
+
+        if (byId("staffLogoutButton")) byId("staffLogoutButton").addEventListener("click", logoutStaff);
+        if (byId("refreshStaffDashboard")) byId("refreshStaffDashboard").addEventListener("click", loadStaffStudents);
+        if (byId("staffStudentSearch")) byId("staffStudentSearch").addEventListener("input", function () {
+            const query = this.value.trim().toLowerCase();
+            document.querySelectorAll("#staffStudentsBody tr[data-search]").forEach((row) => {
+                row.hidden = !row.dataset.search.includes(query);
+            });
+        });
+        document.querySelectorAll("[data-staff-view]").forEach((button) => button.addEventListener("click", function () {
+            document.querySelectorAll("[data-staff-view]").forEach((item) => item.classList.toggle("active", item === button));
+            const isStudents = button.dataset.staffView === "students";
+            byId("staffPageTitle").textContent = isStudents ? "Students" : "Overview";
+            byId("staffTableTitle").textContent = isStudents ? "All students" : "Students";
+        }));
+
+        const token = getStaffToken();
+        const savedStaff = localStorage.getItem("staffUser");
+        if (token && savedStaff) {
+            try { showStaffDashboard(JSON.parse(savedStaff)); }
+            catch { logoutStaff(); }
         }
     });
-});
+})();
