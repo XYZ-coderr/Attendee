@@ -1,0 +1,1128 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
+
+<title>Attendee - Student Attendance System</title>
+
+<link rel="stylesheet" href="style.css">
+
+</head>
+
+
+<body>
+
+
+<!-- =====================================================
+     OPENING PAGE
+===================================================== -->
+
+<div id="startPage">
+
+
+    <div class="attendee-text">
+
+        <span>A</span>
+        <span>T</span>
+        <span>T</span>
+        <span>E</span>
+        <span>N</span>
+        <span>D</span>
+        <span>E</span>
+        <span>E</span>
+
+    </div>
+
+
+    <div class="loading-container">
+
+        <div class="loading-bar"></div>
+
+    </div>
+
+
+</div>
+
+
+
+<!-- =====================================================
+     AUTHENTICATION PAGE
+===================================================== -->
+
+<div id="authPage">
+
+
+    <div class="auth-frame">
+
+
+        <div class="auth-box">
+
+
+            <!-- ROBOT -->
+
+            <div class="robot-area">
+
+
+                <div
+                    class="robot-message"
+                    id="robotMessage">
+
+                    Beep boop. Who goes there?
+
+                </div>
+
+
+                <div
+                    class="robot"
+                    id="robot">
+
+
+                    <div class="robot-face">
+
+
+                        <div
+                            class="robot-eye left">
+                        </div>
+
+
+                        <div
+                            class="robot-eye right">
+                        </div>
+
+
+                        <div
+                            class="robot-smile">
+                        </div>
+
+
+                        <div
+                            class="robot-cheek left">
+                        </div>
+
+
+                        <div
+                            class="robot-cheek right">
+                        </div>
+
+
+                    </div>
+
+
+                </div>
+
+
+            </div>
+
+
+
+            <!-- =================================================
+                 WELCOME
+            ================================================= -->
+
+            <div id="welcomeSection">
+
+
+                <div class="welcome">
+
+
+                    <h1>
+
+                        Welcome,
+                        <span>Student</span>
+
+                    </h1>
+
+
+                </div>
+
+
+                <div class="auth-options">
+
+
+                    <button
+                        type="button"
+                        class="auth-option"
+                        id="loginTab"
+                        onclick="showLogin()">
+
+                        Login
+
+                    </button>
+
+
+                    <button
+                        type="button"
+                        class="auth-option"
+                        id="signupTab"
+                        onclick="showSignup()">
+
+                        Sign Up
+
+                    </button>
+
+
+                </div>
+
+
+            </div>
+
+
+
+            <!-- =================================================
+                 LOGIN
+            ================================================= -->
+
+            <form
+                id="loginForm"
+                class="auth-form">
+
+
+                <h2 class="auth-title">
+
+                    Student Login
+
+                </h2>
+
+
+                <!-- REGISTRATION NUMBER -->
+
+                <label>
+                    Registration Number
+                </label>
+
+
+                <div class="input-wrapper">
+
+
+                    <input
+                        type="text"
+                        id="loginRegNo"
+                        placeholder="Enter registration number"
+                        autocomplete="username"
+                        required
+                    >
+
+
+                    <span class="input-icon">
+                        👤
+                    </span>
+
+
+                </div>
+
+
+                <!-- PASSWORD -->
+
+                <label>
+                    Password
+                </label>
+
+
+                <div class="input-wrapper">
+
+
+                    <input
+                        type="password"
+                        id="loginPassword"
+                        placeholder="Enter password"
+                        autocomplete="current-password"
+                        required
+                    >
+
+
+                    <button
+                        type="button"
+                        class="password-toggle"
+                        onclick="togglePassword(
+                            'loginPassword',
+                            this
+                        )">
+
+                        👁
+
+                    </button>
+
+
+                </div>
+
+
+                <button
+                    type="submit"
+                    class="submit-btn"
+                    id="loginButton">
+
+                    LOG ME IN
+
+                </button>
+
+
+                <button
+                    type="button"
+                    class="back-btn"
+                    onclick="backToWelcome()">
+
+                    ← Back
+
+                </button>
+
+
+                <p
+                    id="loginMessage"
+                    class="form-message">
+                </p>
+
+
+            </form>
+            
+<div id="staffLoginSection">
+    <h3>Faculty / Admin Login</h3>
+
+    <form id="staffLoginForm">
+        <label for="staffUsername">Username</label>
+        <input
+            type="text"
+            id="staffUsername"
+            name="username"
+            placeholder="Enter staff username"
+            required
+        >
+
+        <label for="staffPassword">Password</label>
+        <input
+            type="password"
+            id="staffPassword"
+            name="password"
+            placeholder="Enter staff password"
+            required
+        >
+
+        <button type="submit">Login as Faculty / Admin</button>
+        <p id="staffLoginMessage"></p>
+    </form>
+</div>
+
+
+
+
+            <!-- =================================================
+                 SIGN UP
+            ================================================= -->
+
+            <form
+                id="signupForm"
+                class="auth-form">
+
+
+                <h2 class="auth-title">
+
+                    Create Student Account
+
+                </h2>
+
+
+                <!-- REGISTRATION NUMBER -->
+
+                <label>
+                    Registration Number
+                </label>
+
+
+                <div class="input-wrapper">
+
+
+                    <input
+                        type="text"
+                        id="signupRegNo"
+                        placeholder="Enter registration number"
+                        required
+                    >
+
+
+                    <span class="input-icon">
+                        👤
+                    </span>
+
+
+                </div>
+
+
+                <!-- NAME -->
+
+                <label>
+                    Student Name
+                </label>
+
+
+                <div class="input-wrapper">
+
+
+                    <input
+                        type="text"
+                        id="signupName"
+                        placeholder="Enter your name"
+                        required
+                    >
+
+
+                    <span class="input-icon">
+                        ✎
+                    </span>
+
+
+                </div>
+
+
+                <!-- YEAR -->
+
+                <label>
+                    Year
+                </label>
+
+
+                <select
+                    id="signupYear"
+                    required>
+
+                    <option value="">
+                        Select Year
+                    </option>
+
+                    <option value="1">
+                        1st Year
+                    </option>
+
+                    <option value="2">
+                        2nd Year
+                    </option>
+
+                    <option value="3">
+                        3rd Year
+                    </option>
+
+                    <option value="4">
+                        4th Year
+                    </option>
+
+                </select>
+
+
+                <!-- SECTION -->
+
+                <label>
+                    Section
+                </label>
+
+
+                <select
+                    id="signupSection"
+                    required>
+
+                    <option value="">
+                        Select Section
+                    </option>
+
+                    <option value="A">
+                        Section A
+                    </option>
+
+                    <option value="B">
+                        Section B
+                    </option>
+
+                    <option value="C">
+                        Section C
+                    </option>
+
+                    <option value="D">
+                        Section D
+                    </option>
+
+                </select>
+
+
+                <!-- SEMESTER -->
+
+                <label>
+                    Semester
+                </label>
+
+
+                <select
+                    id="signupSemester"
+                    required>
+
+                    <option value="">
+                        Select Semester
+                    </option>
+
+                    <option value="1">
+                        Semester 1
+                    </option>
+
+                    <option value="2">
+                        Semester 2
+                    </option>
+
+                    <option value="3">
+                        Semester 3
+                    </option>
+
+                    <option value="4">
+                        Semester 4
+                    </option>
+
+                    <option value="5">
+                        Semester 5
+                    </option>
+
+                    <option value="6">
+                        Semester 6
+                    </option>
+
+                    <option value="7">
+                        Semester 7
+                    </option>
+
+                    <option value="8">
+                        Semester 8
+                    </option>
+
+                </select>
+
+
+                <!-- PASSWORD -->
+
+                <label>
+                    Password
+                </label>
+
+
+                <div class="input-wrapper">
+
+
+                    <input
+                        type="password"
+                        id="signupPassword"
+                        placeholder="Create a strong password"
+                        required
+                    >
+
+
+                    <button
+                        type="button"
+                        class="password-toggle"
+                        onclick="togglePassword(
+                            'signupPassword',
+                            this
+                        )">
+
+                        👁
+
+                    </button>
+
+
+                </div>
+
+
+                <!-- PASSWORD STRENGTH -->
+
+                <div class="password-strength">
+
+
+                    Password strength:
+
+                    <span id="strengthText">
+                        Not entered
+                    </span>
+
+
+                    <div class="strength-bar">
+
+
+                        <div
+                            class="strength-fill"
+                            id="strengthFill">
+                        </div>
+
+
+                    </div>
+
+
+                </div>
+
+
+                <!-- PASSWORD RULES -->
+
+                <div class="password-rules">
+
+
+                    <div id="ruleLength">
+
+                        ○ At least 8 characters
+
+                    </div>
+
+
+                    <div id="ruleUpper">
+
+                        ○ One uppercase letter (A-Z)
+
+                    </div>
+
+
+                    <div id="ruleNumber">
+
+                        ○ One number (0-9)
+
+                    </div>
+
+
+                    <div id="ruleSpecial">
+
+                        ○ One special character (!@#$%^&*)
+
+                    </div>
+
+
+                </div>
+
+
+                <!-- CONFIRM PASSWORD -->
+
+                <label>
+                    Confirm Password
+                </label>
+
+
+                <div class="input-wrapper">
+
+
+                    <input
+                        type="password"
+                        id="confirmPassword"
+                        placeholder="Confirm your password"
+                        required
+                    >
+
+
+                    <button
+                        type="button"
+                        class="password-toggle"
+                        onclick="togglePassword(
+                            'confirmPassword',
+                            this
+                        )">
+
+                        👁
+
+                    </button>
+
+
+                </div>
+
+
+                <p
+                    id="confirmMessage"
+                    class="form-message">
+                </p>
+
+
+                <!-- SIGN UP -->
+
+                <button
+                    type="submit"
+                    id="signupButton"
+                    class="submit-btn"
+                    disabled>
+
+                    CREATE ACCOUNT ✓
+
+                </button>
+
+
+                <button
+                    type="button"
+                    class="back-btn"
+                    onclick="backToWelcome()">
+
+                    ← Back
+
+                </button>
+
+
+                <p
+                    id="signupMessage"
+                    class="form-message">
+                </p>
+
+
+            </form>
+
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<!-- =====================================================
+     DASHBOARD
+===================================================== -->
+
+<div
+    id="dashboardPage"
+    class="hidden">
+
+
+    <header class="navbar">
+
+
+        <div class="logo">
+            Attendee
+        </div>
+
+
+        <div class="nav-links">
+
+
+            <button
+                class="nav-link"
+                onclick="showDashboard()">
+
+                Attendance
+
+            </button>
+
+
+            <button
+                class="nav-link"
+                onclick="showMess()">
+
+                Mess
+
+            </button>
+
+
+            <button
+                class="logout-btn"
+                onclick="logout()">
+
+                Logout
+
+            </button>
+
+
+        </div>
+
+
+    </header>
+
+
+    <main class="dashboard">
+
+
+        <section class="student-info">
+
+
+            <h2 id="studentName">
+                Student
+            </h2>
+
+
+            <p>
+                Registration No:
+                <span id="studentReg"></span>
+            </p>
+
+
+            <p>
+                Year:
+                <span id="studentYear"></span>
+            </p>
+
+
+            <p>
+                Section:
+                <span id="studentSection"></span>
+            </p>
+
+
+            <p>
+                Semester:
+                <span id="studentSemester"></span>
+            </p>
+
+
+        </section>
+
+
+
+        <section class="overall-section">
+
+
+            <h2>
+                Overall Attendance
+            </h2>
+
+
+            <div
+                class="attendance-circle"
+                id="overallCircle">
+
+
+                <span id="overallPercentage">
+                    0%
+                </span>
+
+
+            </div>
+
+
+            <p id="overallMessage">
+                Attendance information
+            </p>
+
+
+        </section>
+
+
+
+        <section class="subjects-section">
+
+
+            <h2>
+                Your Subjects
+            </h2>
+
+
+            <div id="subjectList"></div>
+
+
+        </section>
+
+
+        <section class="dashboard-buttons">
+
+
+            <button
+                class="mess-btn"
+                onclick="showMess()">
+
+                Hostel Mess Menu
+
+            </button>
+
+
+        </section>
+
+
+    </main>
+
+</div>
+
+
+
+<!-- =====================================================
+     MESS PAGE
+===================================================== -->
+
+<div
+    id="messPage"
+    class="hidden">
+
+
+    <header class="navbar">
+
+
+        <div class="logo">
+            Attendee
+        </div>
+
+
+        <div class="nav-links">
+
+
+            <button
+                class="nav-link"
+                onclick="showDashboard()">
+
+                Attendance
+
+            </button>
+
+
+            <button
+                class="nav-link"
+                onclick="showMess()">
+
+                Mess
+
+            </button>
+
+
+            <button
+                class="logout-btn"
+                onclick="logout()">
+
+                Logout
+
+            </button>
+
+
+        </div>
+
+
+    </header>
+
+
+    <main class="mess-container">
+
+
+        <h1>
+            Hostel Mess Menu
+        </h1>
+
+
+        <p class="subtitle">
+            Weekly Food Schedule
+        </p>
+
+
+        <div class="mess-table">
+
+
+            <table>
+
+
+                <thead>
+
+                    <tr>
+
+                        <th>Day</th>
+                        <th>Breakfast</th>
+                        <th>Lunch</th>
+                        <th>Evening</th>
+                        <th>Dinner</th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+                    <tr>
+
+                        <td>Monday</td>
+                        <td>Poha</td>
+                        <td>Rice, Dal, Sabzi</td>
+                        <td>Tea & Biscuits</td>
+                        <td>Roti, Dal, Paneer</td>
+
+                    </tr>
+
+
+                    <tr>
+
+                        <td>Tuesday</td>
+                        <td>Paratha</td>
+                        <td>Rice, Dal, Chicken</td>
+                        <td>Tea & Snacks</td>
+                        <td>Roti, Sabzi</td>
+
+                    </tr>
+
+
+                    <tr>
+
+                        <td>Wednesday</td>
+                        <td>Upma</td>
+                        <td>Rice, Dal, Sabzi</td>
+                        <td>Tea & Biscuits</td>
+                        <td>Roti, Dal</td>
+
+                    </tr>
+
+
+                    <tr>
+
+                        <td>Thursday</td>
+                        <td>Vada</td>
+                        <td>Rice, Dal, Sabzi</td>
+                        <td>Tea & Snacks</td>
+                        <td>Roti, Paneer</td>
+
+                    </tr>
+
+
+                    <tr>
+
+                        <td>Friday</td>
+                        <td>Poha</td>
+                        <td>Rice, Dal, Chicken</td>
+                        <td>Tea & Biscuits</td>
+                        <td>Roti, Dal, Sabzi</td>
+
+                    </tr>
+
+
+                    <tr>
+
+                        <td>Saturday</td>
+                        <td>Paratha</td>
+                        <td>Rice, Dal, Sabzi</td>
+                        <td>Tea & Snacks</td>
+                        <td>Roti, Dal</td>
+
+                    </tr>
+
+
+                    <tr>
+
+                        <td>Sunday</td>
+                        <td>Poori Sabzi</td>
+                        <td>Rice, Dal, Special</td>
+                        <td>Tea & Snacks</td>
+                        <td>Roti, Chicken</td>
+
+                    </tr>
+
+                </tbody>
+
+
+            </table>
+
+
+        </div>
+
+
+    </main>
+
+</div>
+
+
+
+<!-- =====================================================
+     ATTENDANCE MODAL
+===================================================== -->
+
+<div
+    id="attendanceModal"
+    class="modal">
+
+
+    <div class="modal-content">
+
+
+        <span
+            class="close"
+            onclick="closeModal()">
+
+            &times;
+
+        </span>
+
+
+        <h2 id="modalSubject">
+            Subject
+        </h2>
+
+
+        <div
+            class="small-circle"
+            id="modalCircle">
+
+
+            <span id="modalPercentage">
+                0%
+            </span>
+
+
+        </div>
+
+
+        <div class="modal-attendance">
+
+
+            <p>
+                Classes Attended:
+                <strong id="modalPresent">
+                    0
+                </strong>
+            </p>
+
+
+            <p>
+                Total Classes:
+                <strong id="modalTotal">
+                    0
+                </strong>
+            </p>
+
+
+            <p>
+                Classes Needed for 75%:
+                <strong id="modalNeeded">
+                    0
+                </strong>
+            </p>
+
+
+        </div>
+
+
+        <h3>
+            Mark Attendance
+        </h3>
+
+
+        <div class="attendance-buttons">
+
+
+            <button
+                class="present-btn"
+                onclick="markAttendance('present')">
+
+                Present
+
+            </button>
+
+
+            <button
+                class="absent-btn"
+                onclick="markAttendance('absent')">
+
+                Absent
+
+            </button>
+
+
+            <button
+                class="cancelled-btn"
+                onclick="markAttendance('cancelled')">
+
+                Class Cancelled
+
+            </button>
+
+
+        </div>
+
+
+    </div>
+
+</div>
+
+
+<script src="script.js"></script>
+
+</body>
+
+</html>
